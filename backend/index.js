@@ -18,11 +18,7 @@ db.sync({ force: true }).then(async () => {
             console.log('GET on \'/\'')
             res.send("API HOMEPAGE")
         })
-        app.get('/api', (req, res) => {
-            Users.findAll()
-            .then(users => res.status(200).json(users))
-            .catch(err => console.log(err))
-        })
+        app.use('/api', apiRoutes)
     
         app.listen(PORT, () => console.log(`Listening on localhost:${PORT}`))
 })
