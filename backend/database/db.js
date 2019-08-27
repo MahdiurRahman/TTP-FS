@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const databaseName = dbu8rk4ankmqe3
+const databaseName = "dbu8rk4ankmqe3"
 
 console.log('Opening database connection');
 
