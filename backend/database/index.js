@@ -1,7 +1,8 @@
 const db = require('./db')
 
-require("./Models/Associations");
-require("./Models/Users");
-require("./Models/Transactions");
+require("./models/Associations")
+require("./models/Users")
+require("./models/Shares")
+require("./models/Transactions")
 
 module.exports = db;
