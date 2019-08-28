@@ -164,7 +164,7 @@ router.get('/users/:id', (req, res) => {
     })
 })
 
-// Get all users
+// Get all Users
 router.get('/users', (req, res) => {
     Users.findAll()
     .then(users => res.status(200).json(users))
@@ -174,24 +174,34 @@ router.get('/users', (req, res) => {
     })
 })
 
-// NEED TO CHECK FOR DUPLICATE EMAIL
+// Register new User
 router.post('/users', async (req, res) => {
-    await bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) {
-            console.log(err)
-            res.send('ERROR: User could not be registered')
+    const existing_user = await Users.findOne({
+        where: {
+            email: req.body.email
         }
-        else {
-            const helperVariable = req.body
-            helperVariable.password = hash
-            Users.create(helperVariable)
-            .then(() => res.send(helperVariable))
-            .catch(err => {
+    })
+    if (existing_user) {
+        res.status(403).send("Error: a user with that email already exists")
+    }
+    else {
+        await bcrypt.hash(req.body.password, 10, (err, hash) => {
+            if (err) {
                 console.log(err)
                 res.send('ERROR: User could not be registered')
-            })
-        }
-    });
+            }
+            else {
+                const helperVariable = req.body
+                helperVariable.password = hash
+                Users.create(helperVariable)
+                .then(() => res.send(helperVariable))
+                .catch(err => {
+                    console.log(err)
+                    res.send('ERROR: User could not be registered')
+                })
+            }
+        });
+    }
 })
 
 module.exports = router
