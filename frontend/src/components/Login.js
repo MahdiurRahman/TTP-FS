@@ -33,11 +33,6 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <div>
-                    <h3>{this.props.user.firstName}</h3>
-                    <h3>{this.props.user.lastName}</h3>
-                    <h3>{this.props.user.email}</h3>
-                </div>
                 <form onSubmit={this.onSubmitHandler}>
                     <input name="email" type="text" placeholder="email" onChange={this.onChangeHandler} />
                     <input name="password" type="password" placeholder="password" onChange={this.onChangeHandler} />
