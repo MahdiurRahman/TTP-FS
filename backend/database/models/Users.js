@@ -19,7 +19,7 @@ const Users = db.define('Users', {
         allowNull: false
     },
     balance: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: false
     }
 })

@@ -51,7 +51,7 @@ router.post('/users/:id/buy', async (req, res) => {
 
         // Updating User(balance):
             let balance_ = User.balance
-            balance_ -= (req.body.price * req.body.quantity)
+            balance_ = parseFloat(balance_) - (req.body.price * req.body.quantity)
             await User.update({
                 balance: balance_
             })
@@ -106,7 +106,8 @@ router.post('/users/:id/sell', async (req, res) => {
 
                     // Updating User(balance):
                         let balance_ = User.balance
-                        balance_ += (req.body.price * req.body.quantity)
+                        let income_ = req.body.price * req.body.quantity
+                        balance_ = parseFloat(balance_) + income_
                         await User.update({
                             balance: balance_
                         })
