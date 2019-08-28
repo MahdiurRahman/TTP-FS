@@ -204,4 +204,30 @@ router.post('/users', async (req, res) => {
     }
 })
 
+// Login User
+router.get('/login', async (req, res) => {
+    const user_ = await Users.findOne({
+        where: {
+            email: req.body.email
+        }
+    })
+
+    if (user_) {
+        // Email found, now check password
+        bcrypt.compare(req.body.password, user_.password)
+        .then(result => {
+            if (result) {
+                return res.send(user_)
+            }
+            else {
+                return res.status(403).send("Error: wrong password")
+            }
+        })
+    }
+    else {
+        // Email not found
+        res.status(404).send("Error: didn't find user")
+    }
+})
+
 module.exports = router
