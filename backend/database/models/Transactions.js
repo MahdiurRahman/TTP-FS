@@ -15,7 +15,7 @@ const Transactions = db.define('Transactions', {
         allowNull: false
     },
     price: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: false
     },
     quantity: {
@@ -35,7 +35,7 @@ const Transactions = db.define('Transactions', {
         allowNull: false
     },
     balance: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: false
     }
 })
