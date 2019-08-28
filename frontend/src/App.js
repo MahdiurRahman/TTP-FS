@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
+import {Redirect} from 'react-router'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux'
 
 // Components
 import Login from './components/Login'
 import Register from './components/Register'
+import Portfolio from './components/Portfolio'
 
 class App extends React.Component {
   constructor(props) {
@@ -14,7 +16,6 @@ class App extends React.Component {
 
   render() {
     // Render Variables
-    const LoginPage = (<Login />)
     const RegisterPage = () => (<Register />)
 
     return (
@@ -22,23 +23,21 @@ class App extends React.Component {
         <Router>
           <Switch>
             <Route exact path="/" render={() => {
-              console.log(this.props.user.email)
               if (this.props.user.email == undefined) {
-                console.log("No user")
-                return LoginPage
+                return <Login />
               }
               else {
-                console.log("Logged in")
-                return <div>Logged In</div>
+                return <Portfolio />
               }
             }} />
-            {/* {
-              this.props.user == {} ?
-              <Route exact path="/" render={LoginPage} />
-              :
-              <Route exact path="/" render={() => <div>Logged in</div>} />
-            } */}
-            <Route exact path="/register" render={RegisterPage} />
+            <Route exact path="/register" render={() => {
+              if (this.props.user.email == undefined) {
+                return <Register />
+              }
+              else {
+                return <Redirect to="/" />
+              }
+            }} />
           </Switch>
         </Router>
       </div>
