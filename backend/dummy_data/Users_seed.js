@@ -4,21 +4,21 @@ const Users_seed = [
         lastName: 'Goodman',
         email: 'sal@email.com',
         password: 'password',
-        balance: 5000
+        balance: 4000
     },
     {
         firstName: 'Mark',
         lastName: 'Wahlberg',
         email: 'mark@email.com',
         password: 'password',
-        balance: 5000
+        balance: 4000
     },
     {
         firstName: 'Junie',
         lastName: 'Jones',
         email: 'junie@email.com',
         password: 'password',
-        balance: 5000
+        balance: 4000
     }
 ]
 

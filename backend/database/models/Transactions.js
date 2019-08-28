@@ -22,6 +22,18 @@ const Transactions = db.define('Transactions', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
+    month: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    day: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    year: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     balance: {
         type: Sequelize.INTEGER,
         allowNull: false
