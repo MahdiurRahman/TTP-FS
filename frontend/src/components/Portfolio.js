@@ -59,6 +59,7 @@ class Portfolio extends Component {
                     <div>
                         <Link to="/"><button>Portfolio</button></Link>
                         <Link to="/transactions"><button>Transactions</button></Link>
+                        <Link to="/"><button onClick={() => window.location.reload()}>Logout</button></Link>
                     </div>
                 </div>
                 <PurchaseShares computePortfolioValue={this.computePortfolioValue} />
