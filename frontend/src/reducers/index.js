@@ -33,9 +33,20 @@ const transactionsReducer = (oldTransactions = [], action) => {
     }
 }
 
+// Portfolio Value reducer
+const portfolioReducer = (oldPortfolioValue = 0, action) => {
+    switch (action.type) {
+        case "UPDATE_VALUE":
+            return action.payload
+        default:
+            return oldPortfolioValue
+    }
+}
+
 // Combine reducers
 export default combineReducers({
     user: userReducer,
     shares: sharesReducer,
-    transactions: transactionsReducer
+    transactions: transactionsReducer,
+    portfolio: portfolioReducer
 })

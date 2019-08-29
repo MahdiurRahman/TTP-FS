@@ -38,7 +38,7 @@ router.post('/users/:id/buy', async (req, res) => {
             if (findShares) { // If already has shares of company
                 const quantity_ = findShares.quantity
                 await findShares.update({
-                    quantity: quantity_ + req.body.quantity
+                    quantity: parseInt(quantity_) + parseInt(req.body.quantity)
                 })
             }
             else { // If doesn't have shares of company

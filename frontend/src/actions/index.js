@@ -13,3 +13,10 @@ export const updateSharesStore = shares => {
         payload: shares
     }
 }
+
+export const updatePortfolioValue = value => {
+    return {
+        type: "UPDATE_VALUE",
+        payload: value
+    }
+}
