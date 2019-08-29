@@ -2,7 +2,7 @@ import {combineReducers} from 'redux'
 
 // User reducer
 const userReducer = (oldUser = {}, action) => {
-    console.log(action)
+    // console.log(action)
     switch (action.type) {
         case "LOGIN_USER":
             return action.payload
