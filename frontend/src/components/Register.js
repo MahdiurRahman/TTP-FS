@@ -10,9 +10,7 @@ class Register extends Component {
             lastName: '',
             email: '',
             password: '',
-            passwordCheck: '',
-            redirect: false,
-            emailAlreadyExists: false
+            redirect: false
         }
     }
 
@@ -25,13 +23,18 @@ class Register extends Component {
 
     onSubmitHandler = async event => {
         event.preventDefault()
-        if (this.state.password === this.state.passwordCheck) {
-            const newUser = await axios.post("http://localhost:5000/api/users", this.state)
-            console.log(newUser)
-        }
-        else {
+        console.log("REGISTER: onSubmitHandler", this.state)
+
+        const newUser = await axios.post("http://localhost:5000/api/users", {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            password: this.state.password,
+            balance: 5000
+        })
+        if (newUser.status === 200) {
             this.setState({
-                passwordsDontMatch: true
+                redirect: true
             })
         }
     }

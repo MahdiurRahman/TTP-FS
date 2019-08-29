@@ -205,7 +205,8 @@ router.post('/users', async (req, res) => {
 })
 
 // Login User
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
+    console.log(req.body)
     const user_ = await Users.findOne({
         where: {
             email: req.body.email
