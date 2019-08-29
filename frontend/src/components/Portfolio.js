@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {updateShares} from '../actions'
+import {updateSharesStore} from '../actions'
 import {Link} from 'react-router-dom'
 
 class Portfolio extends Component {
@@ -14,17 +14,40 @@ class Portfolio extends Component {
 
     async componentDidMount() {
         console.log("PORTFOLIO: componentDidMount", this.props.user)
-        const shares = await axios.get("http://localhost:5000/api/users/" + this.props.user.id + "/shares")
-        this.props.updateShares(shares.data)
-        // this.computePortfolio(this.props.shares)
+
+        const databaseShares = await axios.get("http://localhost:5000/api/users/" + this.props.user.id + "/shares")
+
+        this.updateShares(databaseShares.data)
     }
 
-    computePortfolio = async shares => {
-        // https://sandbox.iexapis.com/stable/stock/SNAP/quote?token=Tpk_c992f1040edb403ab549c3ce37cae445
-
-        for (let i = 0; i < this.props.shares.length; i++) {
-            const stockQuote = await axios.get("https://sandbox.iexapis.com/stable/stock/" + this.props.shares[i].symbol + "/quote?token=Tpk_c992f1040edb403ab549c3ce37cae445")
+    updateShares = async databaseShares => {
+        let storeShares = databaseShares
+        for (let i = 0; i < storeShares.length; i++) {
+            const stockQuote = await axios.get("https://cloud.iexapis.com/stable/stock/" + storeShares[i].symbol + "/quote?token=pk_11c90fe47d2a45778fc45e8f01f27e4d")
             console.log(stockQuote)
+            storeShares[i].open = stockQuote.data.open
+            storeShares[i].latestPrice = stockQuote.data.latestPrice
+        }
+        this.props.updateSharesStore(storeShares)
+
+        this.computePortfolioValue()
+    }
+
+    computePortfolioValue = () => {
+        // Reset Portfolio
+        this.setState({
+            portfolio: 0
+        })
+
+        // Iterate through shares in store and sum
+        for (let i = 0; i < this.props.shares.length; i++) {
+            // Multiply share price by quantity
+            const addition = this.props.shares[i].latestPrice * this.props.shares[i].quantity
+
+            // Sum to portfolio
+            this.setState({
+                portfolio: this.state.portfolio + addition
+            })
         }
     }
 
@@ -39,6 +62,8 @@ class Portfolio extends Component {
                             <div>
                                 <h3>{share.symbol}</h3>
                                 <h3>{share.quantity}</h3>
+                                <h3>{share.open}</h3>
+                                <h3>{share.latestPrice}</h3>
                             </div>
                         )
                     })
@@ -56,5 +81,5 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
-    updateShares
+    updateSharesStore
 })(Portfolio)
