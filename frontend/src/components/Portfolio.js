@@ -1,21 +1,25 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {updateSharesStore} from '../actions'
+import {updateSharesStore, updatePortfolioValue} from '../actions'
 import {Link} from 'react-router-dom'
+
+// Sub-Components
+import PurchaseShares from './PurchaseShares'
 
 class Portfolio extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            portfolio: 0
-        }
     }
 
     async componentDidMount() {
         console.log("PORTFOLIO: componentDidMount", this.props.user)
 
-        // Set up the IEX-Api call to occur every minute
+        // First initial IEX-Api call
+        const databaseShares = await axios.get("http://localhost:5000/api/users/" + this.props.user.id + "/shares")
+        this.updateShares(databaseShares.data)
+
+        // Then, set up the IEX-Api call to occur every minute
         this.IEXApiCall = setInterval(async () => {
             const databaseShares = await axios.get("http://localhost:5000/api/users/" + this.props.user.id + "/shares")
             this.updateShares(databaseShares.data)
@@ -28,7 +32,7 @@ class Portfolio extends Component {
             const stockQuote = await axios.get("https://cloud.iexapis.com/stable/stock/" + storeShares[i].symbol + "/quote?token=pk_11c90fe47d2a45778fc45e8f01f27e4d")
             console.log(stockQuote)
             storeShares[i].open = stockQuote.data.open
-            storeShares[i].latestPrice = stockQuote.data.latestPrice
+            storeShares[i].price = stockQuote.data.latestPrice
         }
         this.props.updateSharesStore(storeShares)
 
@@ -36,40 +40,32 @@ class Portfolio extends Component {
     }
 
     computePortfolioValue = () => {
-        // Reset Portfolio
-        this.setState({
-            portfolio: 0
-        })
-
         // Iterate through shares in store and sum
+        let sum = 0
         for (let i = 0; i < this.props.shares.length; i++) {
-            // Multiply share price by quantity
-            const addition = this.props.shares[i].latestPrice * this.props.shares[i].quantity
-
-            // Sum to portfolio
-            this.setState({
-                portfolio: this.state.portfolio + addition
-            })
+            sum += (this.props.shares[i].price * this.props.shares[i].quantity)
         }
+        this.props.updatePortfolioValue(sum)
     }
 
     render() {
         return (
             <div>
-                <h2>Welcome, {this.props.user.firstName}</h2>
-                <h2>Portfolio: {this.state.portfolio}</h2>
-                {
-                    this.props.shares.map(share => {
+                <h1>welcome, {this.props.user.firstName}</h1>
+                <h2>portfolio (${this.props.portfolio})</h2>
+                <PurchaseShares computePortfolioValue={this.computePortfolioValue} />
+                <div>
+                    {this.props.shares.map(share => {
                         return (
                             <div>
                                 <h3>{share.symbol}</h3>
-                                <h3>{share.quantity}</h3>
-                                <h3>{share.open}</h3>
-                                <h3>{share.latestPrice}</h3>
+                                <h3>shares: {share.quantity}</h3>
+                                <h3>open: ${share.open}</h3>
+                                <h3>price: ${share.price}</h3>
                             </div>
                         )
-                    })
-                }
+                    })}
+                </div>
             </div>
         )
     }
@@ -78,10 +74,12 @@ class Portfolio extends Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
-        shares: state.shares
+        shares: state.shares,
+        portfolio: state.portfolio
     }
 }
 
 export default connect(mapStateToProps, {
-    updateSharesStore
+    updateSharesStore,
+    updatePortfolioValue
 })(Portfolio)
