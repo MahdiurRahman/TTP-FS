@@ -15,9 +15,11 @@ class Portfolio extends Component {
     async componentDidMount() {
         console.log("PORTFOLIO: componentDidMount", this.props.user)
 
-        const databaseShares = await axios.get("http://localhost:5000/api/users/" + this.props.user.id + "/shares")
-
-        this.updateShares(databaseShares.data)
+        // Set up the IEX-Api call to occur every minute
+        this.IEXApiCall = setInterval(async () => {
+            const databaseShares = await axios.get("http://localhost:5000/api/users/" + this.props.user.id + "/shares")
+            this.updateShares(databaseShares.data)
+        }, 60000)
     }
 
     updateShares = async databaseShares => {
