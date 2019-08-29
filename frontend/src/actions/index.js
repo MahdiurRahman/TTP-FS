@@ -20,3 +20,11 @@ export const updatePortfolioValue = value => {
         payload: value
     }
 }
+
+export const updateTransactions = transactions => {
+    console.log("action: updateTransactions", transactions)
+    return {
+        type: "UPDATE_TRANSACTIONS",
+        payload: transactions
+    }
+}

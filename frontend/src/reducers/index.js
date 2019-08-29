@@ -26,7 +26,7 @@ const sharesReducer = (oldShares = [], action) => {
 // Tansactions reducer
 const transactionsReducer = (oldTransactions = [], action) => {
     switch (action.type) {
-        case "NEW_TRANSACTION":
+        case "UPDATE_TRANSACTIONS":
             return action.payload
         default:
             return oldTransactions

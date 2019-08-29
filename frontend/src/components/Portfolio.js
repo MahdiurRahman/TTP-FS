@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {updateSharesStore, updatePortfolioValue} from '../actions'
+import {updateSharesStore, updatePortfolioValue, updateTransactions} from '../actions'
 import {Link} from 'react-router-dom'
 
 // Sub-Components
@@ -51,8 +51,16 @@ class Portfolio extends Component {
     render() {
         return (
             <div>
-                <h1>welcome, {this.props.user.firstName}</h1>
-                <h2>portfolio (${this.props.portfolio})</h2>
+                <div>
+                    <div>
+                        <h1>welcome, {this.props.user.firstName}</h1>
+                        <h2>portfolio (${this.props.portfolio})</h2>
+                    </div>
+                    <div>
+                        <Link to="/"><button>Portfolio</button></Link>
+                        <Link to="/transactions"><button>Transactions</button></Link>
+                    </div>
+                </div>
                 <PurchaseShares computePortfolioValue={this.computePortfolioValue} />
                 <div>
                     {this.props.shares.map(share => {
@@ -81,5 +89,6 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     updateSharesStore,
-    updatePortfolioValue
+    updatePortfolioValue,
+    updateTransactions
 })(Portfolio)
