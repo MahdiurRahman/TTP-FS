@@ -33,12 +33,12 @@ class Login extends Component {
     render() {
         return (
             <div>
+                <Link to="/register">Register</Link>
                 <form onSubmit={this.onSubmitHandler}>
                     <input name="email" type="text" placeholder="email" onChange={this.onChangeHandler} />
                     <input name="password" type="password" placeholder="password" onChange={this.onChangeHandler} />
                     <button type="submit">Login</button>
                 </form>
-                <Link to="/register">Register</Link>
             </div>
         )
     }
