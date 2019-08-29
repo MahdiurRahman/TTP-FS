@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import Login from './components/Login'
 import Register from './components/Register'
 import Portfolio from './components/Portfolio'
+import Transactions from './components/Transactions'
 
 class App extends React.Component {
   constructor(props) {
@@ -36,6 +37,14 @@ class App extends React.Component {
               }
               else {
                 return <Redirect to="/" />
+              }
+            }} />
+            <Route exact path="/transactions" render={() => {
+              if (this.props.user.email == undefined) {
+                return <Redirect to="/" />
+              }
+              else {
+                return <Transactions />
               }
             }} />
           </Switch>
