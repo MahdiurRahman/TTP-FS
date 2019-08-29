@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {loginUser} from '../actions'
 import axios from 'axios'
 import { connect } from 'react-redux';
+import '../styling/Login.css'
 
 class Login extends Component {
     constructor(props) {
@@ -32,12 +33,12 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
-                <Link to="/register">Register</Link>
-                <form onSubmit={this.onSubmitHandler}>
-                    <input name="email" type="text" placeholder="email" onChange={this.onChangeHandler} />
-                    <input name="password" type="password" placeholder="password" onChange={this.onChangeHandler} />
-                    <button type="submit">Login</button>
+            <div className="mainDiv">
+                <div className="navDiv"><Link className="linkDiv" to="/register">Register</Link></div>
+                <form className="formElem" onSubmit={this.onSubmitHandler}>
+                    <input className="first" name="email" type="text" placeholder="email" onChange={this.onChangeHandler} />
+                    <input className="second" name="password" type="password" placeholder="password" onChange={this.onChangeHandler} />
+                    <button className="third" type="submit">Login</button>
                 </form>
             </div>
         )
